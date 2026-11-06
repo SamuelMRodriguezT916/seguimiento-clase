@@ -12,7 +12,9 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+        $authors = Author::all();
+        return view('books.create', compact('categories', 'authors'));
     }
 
     /**
@@ -20,7 +22,9 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        $authors = Author::all();
+        return view('books.create', compact('categories', 'authors'));
     }
 
     /**
@@ -28,7 +32,15 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|max:255',
+            'price' => 'required|numeric',
+            'category_id' => 'required|exists:categories,id',
+            'author_id' => 'required|exists:authors,id',
+        ]);
+
+        Book::create($request->all());
+        return redirect()->route('books.index');
     }
 
     /**
@@ -44,7 +56,9 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        //
+        $categories = Category::all();
+        $authors = Author::all();
+        return view('books.edit', compact('book', 'categories', 'authors'));
     }
 
     /**
@@ -52,7 +66,15 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        //
+        $request->validate([
+            'title' => 'required|max:255',
+            'price' => 'required|numeric',
+            'category_id' => 'required|exists:categories,id',
+            'author_id' => 'required|exists:authors,id',
+        ]);
+
+        $book->update($request->all());
+        return redirect()->route('books.index');
     }
 
     /**
@@ -60,6 +82,7 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-        //
+        $book->delete();
+        return redirect()->route('books.index');
     }
 }
