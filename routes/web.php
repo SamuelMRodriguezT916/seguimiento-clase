@@ -10,5 +10,5 @@ Route::get('/', function () {
 });
 
 Route::resource('categories',CategoryController::class);
-Route::resource('Authors',AuthorController::class);
+Route::resource('authors',AuthorController::class);
 Route::resource('Books',BookController::class);

@@ -12,7 +12,8 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        //
+        $authors = Author::all(); // Trae todos los registros de la tabla 'authors'
+        return view('authors.index', compact('authors')); // Los envía a la vista
     }
 
     /**
@@ -20,7 +21,7 @@ class AuthorController extends Controller
      */
     public function create()
     {
-        //
+        return view('authors.create');
     }
 
     /**
@@ -28,7 +29,9 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:255' // El nombre es obligatorio
+        ]);
     }
 
     /**
@@ -36,7 +39,7 @@ class AuthorController extends Controller
      */
     public function show(Author $author)
     {
-        //
+    
     }
 
     /**
@@ -44,7 +47,7 @@ class AuthorController extends Controller
      */
     public function edit(Author $author)
     {
-        //
+        return view('authors.edit', compact('author'));
     }
 
     /**
@@ -52,7 +55,12 @@ class AuthorController extends Controller
      */
     public function update(Request $request, Author $author)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:255'
+        ]);
+
+        $author->update($request->all()); // Actualiza el registro
+        return redirect()->route('authors.index');
     }
 
     /**
@@ -60,6 +68,7 @@ class AuthorController extends Controller
      */
     public function destroy(Author $author)
     {
-        //
+        $author->delete(); // Elimina el registro
+        return redirect()->route('authors.index');//devuelve a la vista inicial, donde se muestra todo los Authors
     }
 }
